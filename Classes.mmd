@@ -1,0 +1,120 @@
+classDiagram
+    class Usuario {
+        -int id
+        -String nome
+        -String email
+        -String perfil
+        +login()
+        +logout()
+    }
+
+    class Solicitante {
+        -String tipo
+        -String cnpjCpf
+        +solicitarEntrega()
+        +acompanharStatus()
+    }
+
+    class Operador {
+        -String nivelAcesso
+        +monitorarFrota()
+        +assumirControleRemoto()
+        +gerenciarAnomalias()
+    }
+
+    class Administrador {
+        +cadastrarVGA()
+        +configurarParametros()
+        +auditarLogs()
+    }
+
+    class MotoristaReserva {
+        -String habilitacao
+        -boolean disponivel
+        +receberChamado()
+        +intervirVeiculo()
+    }
+
+    class VGA {
+        -int id
+        -String placa
+        -String status
+        -float nivelBateria
+        -String localizacao
+        +mover()
+        +parar()
+        +executarParadaSegura()
+    }
+
+    class Entrega {
+        -int id
+        -Date dataHora
+        -String prioridade
+        -String status
+        -String temperatura
+        +iniciar()
+        +finalizar()
+        +gerarRelatorio()
+    }
+
+    class Rota {
+        -int id
+        -String origem
+        -String destino
+        -float distancia
+        -int tempoEstimado
+        +calcularRota()
+        +recalcularRota()
+    }
+
+    class Sensor {
+        -int id
+        -String tipo
+        -float valor
+        -boolean status
+        +coletarDado()
+        +calibrar()
+    }
+
+    class Alerta {
+        -int id
+        -String tipo
+        -String descricao
+        -String gravidade
+        +emitir()
+        +confirmar()
+        +encerrar()
+    }
+
+    class Endereco {
+        -String logradouro
+        -String cidade
+        -String estado
+        -String cep
+        +validarCEP()
+    }
+
+    Usuario <|-- Solicitante
+    Usuario <|-- Operador
+    Usuario <|-- Administrador
+    Usuario <|-- MotoristaReserva
+
+    Solicitante "1" -- "0..*" Entrega : solicita
+    Solicitante "1" -- "1" Endereco : possui
+    
+    Operador "1" -- "0..*" VGA : monitora
+    Operador "1" -- "0..*" Alerta : gerencia
+    
+    Administrador "1" -- "0..*" VGA : gerencia
+    Administrador "1" -- "0..*" Usuario : administra
+    
+    MotoristaReserva "1" -- "0..*" VGA : intervem
+
+    VGA "1" -- "1..*" Entrega : realiza
+    VGA "1" -- "0..*" Rota : percorre
+    VGA "1" -- "1..*" Sensor : possui
+    VGA "1" -- "0..*" Alerta : gera
+    VGA "1" -- "1" Endereco : localiza
+
+    Entrega "1" -- "1" Rota : utiliza
+    Alerta "1" -- "0..*" Notificacao : gera
