@@ -1,0 +1,45 @@
+graph TD
+    subgraph Atores
+        S[Solicitante]
+        O[Operador Central]
+        M[Motorista Reserva]
+        A[Administrador]
+        R[Órgão Regulador]
+        T[Sistema Trânsito]
+        F[Sistema Farmácias]
+    end
+
+    subgraph SGEA[Sistema de Entregas Autônomas]
+        UC1[Solicitar Entrega]
+        UC2[Monitorar Frota]
+        UC3[Gerenciar Anomalias]
+        UC4[Assumir Controle Remoto]
+        UC5[Intervir Fisicamente]
+        UC6[Gerar Relatório]
+        UC7[Enviar à ANVISA]
+        UC8[Configurar Sistema]
+        UC9[Cadastrar VGAs]
+        UC10[Consultar Trânsito]
+        UC11[Receber Pedidos ERP]
+        UC12[Autenticar Destinatário]
+    end
+
+    S --> UC1
+    S --> UC12
+    
+    O --> UC2
+    O --> UC3
+    O --> UC4
+    
+    M --> UC5
+    
+    A --> UC8
+    A --> UC9
+    
+    R --> UC7
+    T --> UC10
+    F --> UC11
+    
+    UC1 -.-> UC6
+    UC3 -.-> UC4
+    UC3 -.-> UC5

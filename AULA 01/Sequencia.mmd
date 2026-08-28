@@ -1,0 +1,41 @@
+sequenceDiagram
+    participant S as Solicitante
+    participant I as Interface SGEA
+    participant C as Controlador
+    participant R as Roteirizador
+    participant V as VGA
+    participant M as Monitoramento
+    participant T as Sistema Trânsito
+
+    S->>I: 1. Solicita entrega urgente
+    I->>I: 2. Valida dados
+    I->>C: 3. Envia pedido urgente
+    C->>C: 4. Classifica prioridade
+    
+    C->>R: 5. Calcular rota
+    R->>T: 6. Consultar trânsito
+    T-->>R: 7. Dados tráfego
+    R-->>C: 8. Retorna rota otimizada
+    
+    C->>V: 9. Alocar VGA disponível
+    C->>V: 10. Enviar rota e dados
+    V-->>C: 11. Confirma início
+    C->>M: 12. Iniciar monitoramento
+    
+    M-->>I: 13. Posição inicial
+    I-->>S: 14. Confirmação e rastreio
+    
+    loop A cada 2 segundos
+        V->>M: 15. Envia telemetria
+        M-->>I: 16. Atualiza posição
+        I-->>S: 17. Exibe em mapa
+    end
+    
+    V->>V: 18. Chega ao destino
+    V-->>C: 19. Notifica chegada
+    C-->>I: 20. Alerta destinatário
+    
+    S->>I: 21. Assina recebimento
+    I->>C: 22. Confirma entrega
+    C->>V: 23. Finaliza entrega
+    I-->>S: 24. Comprovante final    
